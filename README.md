@@ -1,6 +1,55 @@
-# 🐯 Test Tiger - Website Testing & Audit Landing Page
+# 🐯 Test Tiger - Website Testing & QA Platform
 
-A professional landing page for Test Tiger's website testing and audit services. Built with Next.js 16, TypeScript, and Tailwind CSS.
+**Transform your website quality with AI-powered autonomous testing**
+
+A comprehensive platform combining a professional landing page with an advanced QA automation system powered by AI agents. Experience the future of website testing where intelligent agents work together to analyze, score, and improve your web presence.
+
+## 🚀 What is Test Tiger?
+
+Test Tiger is a **dual-platform solution**:
+
+### 🎨 **Landing Page** (Frontend)
+- Professional marketing website showcasing QA services
+- Lead capture and conversion optimization
+- Mobile-responsive design with dark mode
+- Built with Next.js 16, TypeScript, and Tailwind CSS
+
+### 🤖 **QA Automation System** (Backend)
+- **AI Agent Team**: CEO, Trace, Load, Link, Structure, and Content agents
+- **Autonomous Analysis**: Intelligent website quality assessment
+- **Real-time Dashboard**: Live progress monitoring via WebSocket
+- **Scoring Engine**: Comprehensive quality metrics (0-100 scale)
+- **CEO Escalation Logic**: Human oversight when needed
+
+## 🏗️ Architecture
+
+```
+test-tiger/
+├── app/                      # Next.js frontend (landing page)
+│   ├── dashboard/           # QA dashboard UI (React)
+│   └── api/agents/          # QA API routes
+├── src/                     # QA automation backend
+│   ├── agents/              # AI agent implementations
+│   ├── controllers/         # API controllers
+│   ├── scorer.ts           # Quality scoring engine
+│   └── dashboard-server.ts # WebSocket server
+└── package.json            # Unified dependencies
+```
+
+## ✨ Key Features
+
+### Landing Page
+- **Conversion-Focused Design**: Strategic CTAs and social proof
+- **SEO Optimized**: Comprehensive metadata and semantic HTML
+- **Performance**: Built with Next.js 16 and Turbopack
+- **Accessibility**: WCAG-compliant with proper ARIA labels
+
+### QA System
+- **Multi-Agent Architecture**: Specialized agents for different aspects
+- **Real-Time Monitoring**: WebSocket-powered live updates
+- **AI Recommendations**: OpenAI-powered improvement suggestions
+- **Video Recording**: All agent activities captured
+- **Business Logic**: CEO agent makes strategic decisions
 
 ## 🚀 Features
 
@@ -36,12 +85,13 @@ A professional landing page for Test Tiger's website testing and audit services.
 - **Font**: Geist Sans & Geist Mono
 - **Build Tool**: Turbopack
 
-## 📦 Getting Started
+## 📋 Getting Started
 
 ### Prerequisites
 
 - Node.js 18+ or Bun
 - npm or bun
+- OpenAI API key (for QA system)
 
 ### Installation
 
@@ -49,17 +99,45 @@ A professional landing page for Test Tiger's website testing and audit services.
 # Install dependencies
 npm install
 
-# Run development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Start production server
-npm start
+# Set up environment variables
+cp ENVIRONMENT_SETUP.md .env
+# Edit .env with your OpenAI API key
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view the landing page.
+## 🎯 Usage
+
+### Option 1: Landing Page Only
+Perfect for showcasing your QA services to potential customers.
+
+```bash
+# Start the marketing website
+npm run dev
+
+# Open http://localhost:3000
+```
+
+### Option 2: QA Dashboard
+Experience the full AI-powered QA system with real-time monitoring.
+
+```bash
+# Start both frontend and QA backend
+npm run qa:start
+
+# Or start components separately:
+npm run dev              # Frontend (Next.js)
+npm run qa:dashboard     # WebSocket dashboard server
+```
+
+### Option 3: QA Analysis Only
+Run automated website analysis programmatically.
+
+```bash
+# Analyze a specific website
+npm run qa:run -- https://example.com
+
+# Or analyze sites from urls.json
+npm run qa:run
+```
 
 ## 🎨 Customization
 

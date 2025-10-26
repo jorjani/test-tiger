@@ -54,6 +54,9 @@ export default function Home() {
               <a href="#testimonials" className="text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">
                 Testimonials
               </a>
+              <a href="/dashboard" className="text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 font-semibold transition-colors">
+                Try Demo
+              </a>
             </div>
             <div>
               <a
