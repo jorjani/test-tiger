@@ -150,7 +150,7 @@ export default function Home() {
                 <video
                   ref={videoRef}
                   className="w-full max-w-4xl rounded-lg shadow-lg"
-                  src="https://media.w3.org/2010/05/sintel/trailer.webm"
+                  src="./sample.mp4"
                   muted
                   playsInline
                   autoPlay
