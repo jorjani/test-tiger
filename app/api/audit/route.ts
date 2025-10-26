@@ -16,14 +16,11 @@ export async function POST(request: NextRequest) {
     // Create audit ID
     const auditId = randomUUID();
 
-    // Initialize Stagehand with video recording
+    // Initialize Stagehand with local Chromium
     console.log('🎬 Starting audit for:', url);
     const stagehand = new Stagehand({
-      env: 'BROWSERBASE',
-      apiKey: process.env.BROWSERBASE_API_KEY!,
-      projectId: process.env.BROWSERBASE_PROJECT_ID!,
+      env: 'LOCAL', // Use local Chromium browser
       enableCaching: false,
-      enableRecording: true, // Enable video recording
     });
 
     await stagehand.init();
@@ -63,15 +60,6 @@ export async function POST(request: NextRequest) {
 
     console.log('📊 Audit complete!');
 
-    // Get session recording URL from Browserbase
-    let videoUrl = null;
-    const sessionId = stagehand.browserbaseSessionID;
-
-    if (sessionId) {
-      // Browserbase video URL format
-      videoUrl = `https://www.browserbase.com/sessions/${sessionId}`;
-    }
-
     // Store results
     const auditData = {
       id: auditId,
@@ -81,8 +69,6 @@ export async function POST(request: NextRequest) {
       insights,
       seo: seoInfo,
       performance: performanceInfo,
-      sessionId,
-      videoUrl,
     };
 
     audits.set(auditId, auditData);
