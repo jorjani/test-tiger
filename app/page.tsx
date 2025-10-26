@@ -1,4 +1,33 @@
+'use client';
+import React, { useState, useRef } from 'react';
+
 export default function Home() {
+  const [auditUrl, setAuditUrl] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!auditUrl) return;
+    setLoading(true);
+    setShowVideo(false);
+
+    // simulate work (replace with real ingestion + test run)
+    setTimeout(async () => {
+      setLoading(false);
+      setShowVideo(true);
+
+      // try to play the video (muted autoplay more likely to succeed)
+      try {
+        await videoRef.current?.play();
+      } catch (err) {
+        // autoplay may be blocked; leave video visible for user to start
+        // no-op
+      }
+    }, 3000);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black">
       {/* Navigation */}
@@ -72,6 +101,62 @@ export default function Home() {
             >
               View Sample Audit
             </a>
+          </div>
+
+          <p className="max-w-3xl mx-auto text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
+            Get a comprehensive website audit that reveals exactly what's costing you conversions,
+            traffic, and revenue. Actionable insights delivered in 48 hours.
+          </p>
+
+          {/* Large centered URL input + CTA */}
+          <div className="flex flex-col items-center mb-12">
+            <form onSubmit={handleSubmit} className="w-full flex flex-col sm:flex-row items-center gap-4 justify-center px-4">
+              <label htmlFor="audit-url" className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-2 leading-relaxed">Website URL</label>
+              <input
+                type="url"
+                value={auditUrl}
+                id="audit-url"
+                name="audit-url"
+                onChange={(e) => setAuditUrl(e.target.value)}
+                placeholder="Enter your website URL (https://sundai.club)"
+                className="w-full max-w-3xl px-6 py-4 rounded-full text-gray-900 focus:outline-none focus:ring-4 focus:ring-orange-300"
+                required
+              />
+              <button
+                type="submit"
+                className="inline-flex items-center px-8 py-4 rounded-full bg-gradient-to-r from-orange-500 to-red-600 text-white text-lg font-semibold hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+                aria-live="polite"
+                disabled={loading}
+              >
+                {loading ? (
+                  <>
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                    </svg>
+                    Running Audit...
+                  </>
+                ) : (
+                  'Audit Website'
+                )}
+              </button>
+            </form>
+
+            {/* Hidden video that appears after the simulated audit */}
+            <div className="w-full flex justify-center mt-6 px-4">
+              {showVideo && (
+                <video
+                  ref={videoRef}
+                  className="w-full max-w-4xl rounded-lg shadow-lg"
+                  src="https://media.w3.org/2010/05/sintel/trailer.webm"
+                  muted
+                  playsInline
+                  autoPlay
+                  controls
+                  aria-hidden={!showVideo}
+                />
+              )}
+            </div>
           </div>
 
           {/* Trust Indicators */}
