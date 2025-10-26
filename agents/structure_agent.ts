@@ -5,12 +5,7 @@ export async function runStructureAgent(url: string) {
   console.log(`   Target: ${url}`);
 
   const browser = await chromium.launch({ headless: true });
-  const context = await browser.newContext({
-    recordVideo: {
-      dir: 'videos/',
-      size: { width: 1920, height: 1080 }
-    }
-  });
+  const context = await browser.newContext();
   const page = await context.newPage();
   await page.goto(url);
 
@@ -37,7 +32,7 @@ export async function runStructureAgent(url: string) {
       document.body.appendChild(overlay);
     });
 
-    await page.waitForTimeout(1500);
+    await page.waitForTimeout(300);
 
     console.log('   🔍 Checking HTML structure...');
     const structure = await page.evaluate(() => {
@@ -90,7 +85,7 @@ export async function runStructureAgent(url: string) {
       }
     }, { struct: structure });
 
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(500);
 
     await context.close();
     await browser.close();
