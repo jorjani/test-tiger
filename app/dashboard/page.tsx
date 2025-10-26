@@ -60,29 +60,10 @@ export default function Dashboard() {
       }
 
       const data = await response.json();
+      console.log('📊 API Response:', data); // Debug logging
 
-      if (data.auditId) {
-        // Poll for results
-        pollForResults(data.auditId);
-      } else {
-        setResults([{ type: 'success', message: 'Analysis complete!', ...data }]);
-        setIsAnalyzing(false);
-      }
-    } catch (error) {
-      console.error('Analysis error:', error);
-      setResults([{ type: 'error', message: error instanceof Error ? error.message : 'Failed to start analysis' }]);
-      setIsAnalyzing(false);
-      setProgress(0);
-    }
-  };
-
-  const pollForResults = async (auditId: string) => {
-    try {
-      const response = await fetch(`/api/audit?id=${auditId}`);
-      const data = await response.json();
-
+      // Results are returned directly (no polling needed)
       if (data.insights) {
-        // Convert audit data to results format
         const auditResults: QAResult[] = [
           {
             type: 'score',
@@ -113,24 +94,23 @@ export default function Dashboard() {
         ];
 
         setResults(auditResults);
-        localStorage.setItem('lastAuditId', auditId);
+        localStorage.setItem('lastAuditId', data.auditId);
         localStorage.setItem('lastResults', JSON.stringify(auditResults));
         setIsAnalyzing(false);
-      } else if (data.error) {
-        setResults([{ type: 'error', message: data.error }]);
+      } else {
+        setResults([{ type: 'error', message: 'No analysis data received' }]);
         setIsAnalyzing(false);
       }
     } catch (error) {
-      console.error('Polling error:', error);
-      setResults([{ type: 'error', message: 'Failed to retrieve results' }]);
+      console.error('Analysis error:', error);
+      setResults([{ type: 'error', message: error instanceof Error ? error.message : 'Failed to start analysis' }]);
       setIsAnalyzing(false);
+      setProgress(0);
     }
   };
 
-  const connectWebSocket = () => {
-    // WebSocket connection will be implemented with Next.js WebSocket support
-    console.log('WebSocket connection pending...');
-  };
+  // Removed pollForResults - not needed with direct response
+  // Removed connectWebSocket - not needed for MVP
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">

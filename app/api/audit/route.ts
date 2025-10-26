@@ -13,6 +13,20 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'URL is required' }, { status: 400 });
     }
 
+    // Validate URL format
+    try {
+      new URL(url);
+    } catch {
+      return NextResponse.json({ error: 'Invalid URL format. Please enter a valid URL.' }, { status: 400 });
+    }
+
+    // Ensure URL starts with http:// or https://
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      return NextResponse.json({
+        error: 'URL must start with http:// or https://'
+      }, { status: 400 });
+    }
+
     // Create audit ID
     const auditId = randomUUID();
 
@@ -60,15 +74,34 @@ export async function POST(request: NextRequest) {
 
     console.log('📊 Audit complete!');
 
+    // Parse JSON strings from Stagehand (it returns JSON as strings)
+    let parsedInsights = insights;
+    let parsedSeo = seoInfo;
+    let parsedPerformance = performanceInfo;
+
+    try {
+      if (typeof insights?.extraction === 'string') {
+        parsedInsights = JSON.parse(insights.extraction);
+      }
+      if (typeof seoInfo?.extraction === 'string') {
+        parsedSeo = JSON.parse(seoInfo.extraction);
+      }
+      if (typeof performanceInfo?.extraction === 'string') {
+        parsedPerformance = JSON.parse(performanceInfo.extraction);
+      }
+    } catch (e) {
+      console.error('JSON parse error:', e);
+    }
+
     // Store results
     const auditData = {
       id: auditId,
       url,
       email,
       timestamp: new Date().toISOString(),
-      insights,
-      seo: seoInfo,
-      performance: performanceInfo,
+      insights: parsedInsights,
+      seo: parsedSeo,
+      performance: parsedPerformance,
     };
 
     audits.set(auditId, auditData);
@@ -76,10 +109,15 @@ export async function POST(request: NextRequest) {
     // Cleanup
     await stagehand.close();
 
+    // Return results directly (KISS - no polling needed)
     return NextResponse.json({
       success: true,
       auditId,
-      message: 'Audit completed successfully'
+      message: 'Audit completed successfully',
+      // Include full results in response
+      insights: parsedInsights,
+      seo: parsedSeo,
+      performance: parsedPerformance
     });
 
   } catch (error) {
