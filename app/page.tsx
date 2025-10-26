@@ -1,5 +1,7 @@
 'use client';
+
 import React, { useState, useRef } from 'react';
+import { CTASection } from './components/CTASection';
 
 export default function Home() {
   const [auditUrl, setAuditUrl] = useState('');
@@ -376,44 +378,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section id="contact" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="bg-gradient-to-r from-orange-500 to-red-600 rounded-2xl shadow-2xl overflow-hidden">
-          <div className="px-8 py-12 md:px-16 md:py-16 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Ready to Fix What's Broken?
-            </h2>
-            <p className="text-xl text-orange-100 mb-8 max-w-2xl mx-auto">
-              Every day you wait is revenue lost. Get your comprehensive audit in 48 hours
-              and start seeing results this week.
-            </p>
-
-            <form className="max-w-md mx-auto space-y-4">
-              <input
-                type="url"
-                placeholder="Enter your website URL"
-                className="w-full px-6 py-4 rounded-full text-gray-900 focus:outline-none focus:ring-4 focus:ring-orange-300"
-                required
-              />
-              <input
-                type="email"
-                placeholder="Your email address"
-                className="w-full px-6 py-4 rounded-full text-gray-900 focus:outline-none focus:ring-4 focus:ring-orange-300"
-                required
-              />
-              <button
-                type="submit"
-                className="w-full px-8 py-4 bg-white text-orange-600 rounded-full font-bold text-lg hover:bg-gray-100 transform hover:scale-105 transition-all duration-200 shadow-lg"
-              >
-                Get My Free Quote
-              </button>
-            </form>
-
-            <p className="text-orange-100 text-sm mt-6">
-              💯 100% Money-Back Guarantee • 🔒 Your data is secure • ⚡ 48-hour turnaround
-            </p>
-          </div>
-        </div>
-      </section>
+      <CTASection />
 
       {/* Footer */}
       <footer className="border-t border-gray-200 dark:border-gray-800 mt-20">
@@ -588,3 +553,5 @@ function TestimonialCard({ quote, author, role, rating }: {
     </div>
   );
 }
+
+// CTA Section Component imported from ./components/CTASection.tsx
