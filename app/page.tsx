@@ -121,7 +121,7 @@ export default function Home() {
                 name="audit-url"
                 onChange={(e) => setAuditUrl(e.target.value)}
                 placeholder="Enter your website URL (https://sundai.club)"
-                className="w-full max-w-3xl px-6 py-4 rounded-full text-gray-900 focus:outline-none focus:ring-4 focus:ring-orange-300"
+                className="w-full max-w-3xl px-6 py-4 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-orange-300 dark:focus:ring-orange-500/30"
                 required
               />
               <button
