@@ -1,11 +1,10 @@
-import { runContentAgent } from "./agents/content_agent";
+import { assignQATask, reviewQAResults } from "./agents/ceo_agent";
 import { runLinkAgent } from "./agents/link_agent";
 import { runLoadAgent } from "./agents/load_agent";
 import { runStructureAgent } from "./agents/structure_agent";
 import { runTraceAgent } from "./agents/trace_agent";
-import { assignQATask, reviewQAResults } from "./agents/ceo_agent";
-import { calculateScore, generateRecommendations, displayResults, checkCEOEscalation } from "./scorer";
 import { generateReport } from "./reporter";
+import { calculateScore, checkHumanEscalation, displayResults, generateRecommendations } from "./scorer";
 import sites from "./urls.json";
 
 (async () => {
@@ -66,7 +65,7 @@ import sites from "./urls.json";
     // Autonomous scoring & recommendations
     const score = calculateScore(results);
     const recommendations = generateRecommendations(results);
-    const escalation = checkCEOEscalation(score, recommendations);
+    const escalation = checkHumanEscalation(score, recommendations);
 
     // Display intelligent analysis
     displayResults(results, score, recommendations);

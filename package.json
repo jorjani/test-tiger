@@ -9,7 +9,11 @@
     "qa:url": "npx ts-node --project tsconfig.json run_agents.ts",
     "qa:shell": "./run_qa.sh",
     "test:openai": "npx ts-node --project tsconfig.json test_openai.ts",
-    "dashboard": "npx ts-node --project tsconfig.json start_dashboard.ts"
+    "dashboard": "npx ts-node --project tsconfig.json start_dashboard.ts",
+    "build": "tsc && cp dashboard.html dist/ && cp bad-website.html dist/",
+    "start": "node dist/start_dashboard.js",
+    "dev": "npm run dashboard",
+    "deploy": "npm run build && npm start"
   },
   "repository": {
     "type": "git",

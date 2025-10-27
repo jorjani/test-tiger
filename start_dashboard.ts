@@ -23,8 +23,9 @@ console.log('   ✅ Human-in-the-loop escalation alerts');
 console.log('   ✅ Agent reasoning display');
 
 console.log('\n🎯 Usage:');
-console.log('   1. Open http://localhost:3000 in your browser');
+console.log('   1. Open http://localhost:8080 in your browser');
 console.log('   2. Enter a URL to analyze');
 console.log('   3. Watch agents work in real-time!');
+console.log('   4. Access bad-website.html at http://localhost:8080/bad-website.html');
 
 console.log('\n🛑 Press Ctrl+C to stop the server\n');

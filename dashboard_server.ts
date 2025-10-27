@@ -1,18 +1,23 @@
 // Real-time Dashboard WebSocket Server
 // Connects agents to live dashboard for progress tracking
 
-import { WebSocketServer } from 'ws';
-import * as http from 'http';
 import * as fs from 'fs';
+import * as http from 'http';
 import * as path from 'path';
+import { WebSocketServer } from 'ws';
 
-const PORT = 3000;
+const PORT = 8080;
 
 // Create HTTP server to serve dashboard
 const server = http.createServer((req, res) => {
   if (req.url === '/' || req.url === '/dashboard') {
     const dashboardPath = path.join(__dirname, 'dashboard.html');
     const html = fs.readFileSync(dashboardPath, 'utf-8');
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.end(html);
+  } else if (req.url === '/bad-website.html') {
+    const badWebsitePath = path.join(__dirname, 'bad-website.html');
+    const html = fs.readFileSync(badWebsitePath, 'utf-8');
     res.writeHead(200, { 'Content-Type': 'text/html' });
     res.end(html);
   } else {
@@ -30,6 +35,15 @@ wss.on('connection', (ws) => {
   console.log('✅ Dashboard client connected');
   clients.add(ws);
 
+  // Send ping every 30 seconds to keep connection alive
+  const pingInterval = setInterval(() => {
+    if (ws.readyState === ws.OPEN) {
+      ws.ping();
+    } else {
+      clearInterval(pingInterval);
+    }
+  }, 30000);
+
   ws.on('message', async (message) => {
     try {
       const data = JSON.parse(message.toString());
@@ -37,31 +51,45 @@ wss.on('connection', (ws) => {
       if (data.type === 'analyze') {
         console.log(`📊 Received analysis request for: ${data.url}`);
 
-        // Run analysis in same process to share WebSocket
-        const { runAnalysis } = await import('./analysis');
-        try {
-          await runAnalysis(data.url);
-          console.log(`✅ Analysis completed successfully`);
+        // Send immediate acknowledgment
+        broadcastProgress({
+          type: 'analysis_started',
+          url: data.url
+        });
 
-          // Broadcast completion to all clients
-          broadcastProgress({
-            type: 'analysis_complete',
-            code: 0
-          });
-        } catch (error) {
-          console.error(`❌ Analysis error:`, error);
-          broadcastProgress({
-            type: 'analysis_complete',
-            code: 1
-          });
-        }
+        // Run analysis in background to prevent WebSocket timeout
+        setImmediate(async () => {
+          try {
+            const { runAnalysis } = await import('./analysis');
+            await runAnalysis(data.url);
+            console.log(`✅ Analysis completed successfully`);
+
+            // Broadcast completion to all clients
+            broadcastProgress({
+              type: 'analysis_complete',
+              code: 0
+            });
+          } catch (error) {
+            console.error(`❌ Analysis error:`, error);
+            broadcastProgress({
+              type: 'analysis_complete',
+              code: 1,
+              error: error instanceof Error ? error.message : String(error)
+            });
+          }
+        });
       }
     } catch (error) {
       console.error('Error handling message:', error);
+      broadcastProgress({
+        type: 'error',
+        message: 'Failed to parse message'
+      });
     }
   });
 
   ws.on('close', () => {
+    clearInterval(pingInterval);
     clients.delete(ws);
     console.log('❌ Dashboard client disconnected');
   });
