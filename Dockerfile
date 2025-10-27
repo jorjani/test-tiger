@@ -38,7 +38,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install ALL dependencies (devDeps needed for Tailwind build)
-RUN npm ci
+RUN npm ci --legacy-peer-deps
 
 # Copy app files
 COPY . .
@@ -46,8 +46,8 @@ COPY . .
 # Build Next.js app
 RUN npm run build
 
-# Prune devDependencies after build to reduce image size
-RUN npm prune --production
+# Skip pruning - keep all dependencies to avoid runtime issues
+# (Container size is less critical than reliability)
 
 # Expose port (Railway sets PORT env var)
 EXPOSE 3000
