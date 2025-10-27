@@ -38,7 +38,7 @@ wss.on('connection', (ws) => {
         console.log(`📊 Received analysis request for: ${data.url}`);
 
         // Run analysis in same process to share WebSocket
-        const { runAnalysis } = require('./analysis');
+        const { runAnalysis } = await import('./analysis');
         try {
           await runAnalysis(data.url);
           console.log(`✅ Analysis completed successfully`);

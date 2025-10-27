@@ -3,459 +3,1154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TestTiger 🐅 - Autonomous QA System</title>
+    <title>Test Tiger - AI QA Dashboard</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #00d4ff;
+            --primary-dark: #0099cc;
+            --secondary: #ff006e;
+            --accent: #8338ec;
+            --success: #06ffa5;
+            --warning: #ffbe0b;
+            --error: #fb5607;
+            --surface: rgba(255, 255, 255, 0.05);
+            --surface-dark: rgba(0, 0, 0, 0.3);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --text-muted: #808080;
+            --border: rgba(0, 212, 255, 0.2);
+            --border-light: rgba(255, 255, 255, 0.1);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 16px 64px rgba(0, 0, 0, 0.4);
+            --shadow-xl: 0 32px 128px rgba(0, 0, 0, 0.5);
+            --radius: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+            --glow: 0 0 20px rgba(0, 212, 255, 0.5);
+            --glow-pink: 0 0 20px rgba(255, 0, 110, 0.5);
+            --glow-purple: 0 0 20px rgba(131, 56, 236, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #ff6b35 100%);
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: radial-gradient(ellipse at center, #0a0a0a 0%, #000000 100%);
             min-height: 100vh;
-            padding: 20px;
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
         }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 0, 110, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(131, 56, 236, 0.1) 0%, transparent 50%);
+            animation: backgroundShift 20s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(180deg); }
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) translateX(0px); opacity: 0; }
+            50% { transform: translateY(-100px) translateX(50px); opacity: 1; }
+        }
+
         .container {
-            max-width: 1200px;
+            max-width: 1600px;
             margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
         }
+
         .header {
-            background: white;
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-            margin-bottom: 20px;
-            border: 3px solid #ff6b35;
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-xl);
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
         }
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 15px;
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            animation: borderGlow 3s ease-in-out infinite;
         }
-        .tiger-emoji {
-            font-size: 48px;
-            animation: roar 3s ease-in-out infinite;
+
+        @keyframes borderGlow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
         }
-        @keyframes roar {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-        h1 {
-            font-size: 36px;
-            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+
+        .header h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin: 0;
-            font-weight: 800;
-        }
-        .tagline {
-            font-size: 16px;
-            color: #666;
-            margin-bottom: 20px;
-        }
-        .url-input-section {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 12px;
-            margin-top: 20px;
-            border: 2px solid #ff6b35;
-        }
-        .url-input-label {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 10px;
-            display: block;
-        }
-        .url-input-container {
+            background-clip: text;
+            margin-bottom: 1rem;
             display: flex;
-            gap: 10px;
+            align-items: center;
+            gap: 2rem;
+            text-shadow: var(--glow);
+            animation: titleGlow 4s ease-in-out infinite;
         }
+
+        @keyframes titleGlow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.2); }
+        }
+
+        .header .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.4rem;
+            margin-bottom: 3rem;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
         .url-input {
             flex: 1;
-            padding: 12px 16px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s;
+            padding: 1.5rem 2rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-lg);
+            font-size: 1.2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--surface-dark);
+            color: var(--text-primary);
+            backdrop-filter: blur(10px);
         }
+
         .url-input:focus {
             outline: none;
-            border-color: #ff6b35;
+            border-color: var(--primary);
+            box-shadow: var(--glow);
+            transform: translateY(-2px);
         }
+
+        .url-input::placeholder {
+            color: var(--text-muted);
+        }
+
         .analyze-btn {
-            padding: 12px 32px;
-            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
+            padding: 1.5rem 3rem;
+            border-radius: var(--radius-lg);
+            font-size: 1.2rem;
+            font-weight: 700;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
+
+        .analyze-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .analyze-btn:hover::before {
+            left: 100%;
+        }
+
         .analyze-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: var(--shadow-xl), var(--glow);
         }
-        .analyze-btn:active {
-            transform: translateY(0);
-        }
+
         .analyze-btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
+            transform: none;
         }
+
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
         }
+
         .card {
-            background: white;
-            padding: 24px;
-            border-radius: 12px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-        }
-        .card h2 {
-            font-size: 18px;
-            margin-bottom: 16px;
-            color: #333;
-        }
-        .progress-bar {
-            height: 8px;
-            background: #e0e0e0;
-            border-radius: 4px;
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-light);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(20px);
+            position: relative;
             overflow: hidden;
-            margin: 16px 0;
         }
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #ff6b35 0%, #f7931e 100%);
-            transition: width 0.3s ease;
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(255, 0, 110, 0.05));
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-xl), var(--glow);
+            transform: translateY(-8px) scale(1.02);
+        }
+
+        .card h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .agent-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
         .agent-status {
             display: flex;
             align-items: center;
-            padding: 12px;
-            margin: 8px 0;
-            background: #f5f5f5;
-            border-radius: 8px;
+            gap: 1.5rem;
+            padding: 2rem;
+            background: var(--surface-dark);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-light);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
         }
+
+        .agent-status::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary);
+            transform: scaleY(0);
+            transition: transform 0.4s ease;
+        }
+
+        .agent-status:hover::before {
+            transform: scaleY(1);
+        }
+
+        .agent-status:hover {
+            background: var(--surface);
+            box-shadow: var(--shadow), var(--glow);
+            transform: translateX(8px);
+        }
+
         .agent-icon {
-            width: 40px;
-            height: 40px;
-            margin-right: 12px;
-            font-size: 24px;
+            font-size: 2rem;
+            width: 4rem;
+            height: 4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: var(--radius-lg);
+            color: white;
+            box-shadow: var(--glow);
+            animation: iconPulse 3s ease-in-out infinite;
         }
+
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
         .agent-info {
             flex: 1;
         }
+
         .agent-name {
-            font-weight: 600;
-            color: #333;
-        }
-        .agent-progress {
-            font-size: 13px;
-            color: #666;
-            margin-top: 4px;
-        }
-        .status-badge {
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        .status-pending { background: #ffeaa7; color: #d63031; }
-        .status-running { background: #74b9ff; color: #0984e3; }
-        .status-complete { background: #55efc4; color: #00b894; }
-        .score-card {
-            text-align: center;
-            padding: 24px;
-        }
-        .score-value {
-            font-size: 64px;
             font-weight: 700;
-            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .agent-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            font-weight: 300;
+        }
+
+        .agent-progress {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .status-badge {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            box-shadow: var(--shadow);
+        }
+
+        .status-pending {
+            background: rgba(128, 128, 128, 0.2);
+            color: var(--text-muted);
+            border: 1px solid rgba(128, 128, 128, 0.3);
+        }
+
+        .status-running {
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            box-shadow: var(--glow);
+            animation: runningGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes runningGlow {
+            0%, 100% { box-shadow: var(--glow); }
+            50% { box-shadow: var(--glow), 0 0 30px rgba(0, 212, 255, 0.8); }
+        }
+
+        .status-complete {
+            background: rgba(6, 255, 165, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+            box-shadow: 0 0 20px rgba(6, 255, 165, 0.5);
+        }
+
+        .status-failed {
+            background: rgba(251, 86, 7, 0.2);
+            color: var(--error);
+            border: 1px solid var(--error);
+            box-shadow: 0 0 20px rgba(251, 86, 7, 0.5);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 1rem;
+            background: var(--surface-dark);
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-light);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            border-radius: var(--radius);
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            box-shadow: var(--glow);
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .quality-score {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin-bottom: 1rem;
+            text-shadow: var(--glow);
+            animation: scoreGlow 3s ease-in-out infinite;
         }
-        .score-label {
-            font-size: 16px;
-            color: #666;
-            margin-top: 8px;
+
+        @keyframes scoreGlow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
         }
+
         .recommendations {
-            background: white;
-            padding: 24px;
-            border-radius: 12px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-light);
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
         }
-        .recommendation-item {
-            padding: 16px;
-            margin: 12px 0;
-            border-left: 4px solid #ff6b35;
-            background: #f8f9fa;
-            border-radius: 4px;
+
+        .recommendations::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            animation: borderGlow 3s ease-in-out infinite;
         }
-        .priority-critical { border-left-color: #d63031; }
-        .priority-high { border-left-color: #fdcb6e; }
-        .priority-medium { border-left-color: #74b9ff; }
-        .recommendation-title {
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #333;
-        }
-        .recommendation-desc {
-            font-size: 14px;
-            color: #666;
-        }
-        .ceo-alert {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 16px rgba(238, 90, 111, 0.3);
-        }
-        .ceo-alert h3 {
-            font-size: 20px;
-            margin-bottom: 8px;
-        }
-        .reasoning-panel {
-            background: white;
-            padding: 24px;
-            border-radius: 12px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-            margin-top: 20px;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        .reasoning-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            color: #333;
+
+        .recommendations h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 1rem;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
+
+        .recommendation-item {
+            padding: 2rem;
+            background: var(--surface-dark);
+            border-radius: var(--radius-lg);
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--primary);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .recommendation-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(255, 0, 110, 0.05));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .recommendation-item:hover::before {
+            opacity: 1;
+        }
+
+        .recommendation-item:hover {
+            background: var(--surface);
+            box-shadow: var(--shadow), var(--glow);
+            transform: translateY(-4px);
+        }
+
+        .recommendation-priority {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow);
+        }
+
+        .priority-critical {
+            background: rgba(251, 86, 7, 0.2);
+            color: var(--error);
+            border: 1px solid var(--error);
+            box-shadow: 0 0 20px rgba(251, 86, 7, 0.5);
+        }
+
+        .priority-high {
+            background: rgba(255, 190, 11, 0.2);
+            color: var(--warning);
+            border: 1px solid var(--warning);
+            box-shadow: 0 0 20px rgba(255, 190, 11, 0.5);
+        }
+
+        .priority-medium {
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            box-shadow: var(--glow);
+        }
+
+        .priority-low {
+            background: rgba(6, 255, 165, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+            box-shadow: 0 0 20px rgba(6, 255, 165, 0.5);
+        }
+
+        .reasoning-panel {
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-light);
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reasoning-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--primary), var(--secondary));
+            animation: borderGlow 3s ease-in-out infinite;
+        }
+
+        .reasoning-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
         .reasoning-item {
-            padding: 12px;
-            margin: 8px 0;
-            border-left: 3px solid #ff6b35;
-            background: #f8f9fa;
-            border-radius: 4px;
-            font-size: 14px;
-            animation: slideIn 0.3s ease-out;
+            padding: 2rem;
+            background: var(--surface-dark);
+            border-radius: var(--radius-lg);
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--accent);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+
+        .reasoning-item:hover {
+            background: var(--surface);
+            box-shadow: var(--shadow), var(--glow-purple);
+            transform: translateX(8px);
         }
-        .reasoning-item.success {
-            border-left-color: #00b894;
-            background: #f0fdf4;
-        }
-        .reasoning-item.warning {
-            border-left-color: #fdcb6e;
-            background: #fffbeb;
-        }
-        .reasoning-item.error {
-            border-left-color: #d63031;
-            background: #fef2f2;
-        }
+
         .reasoning-agent {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .reasoning-message {
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            line-height: 1.6;
+        }
+
+        .reasoning-status {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .human-alert {
+            background: linear-gradient(135deg, rgba(251, 86, 7, 0.1), rgba(255, 190, 11, 0.1));
+            border: 2px solid var(--error);
+            border-radius: var(--radius-xl);
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow-xl), 0 0 30px rgba(251, 86, 7, 0.3);
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .human-alert::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(251, 86, 7, 0.05), rgba(255, 190, 11, 0.05));
+            animation: alertPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes alertPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .human-alert h3 {
+            color: var(--error);
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-shadow: 0 0 10px rgba(251, 86, 7, 0.5);
+        }
+
+        .human-alert p {
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .website-preview {
+            border: 2px solid var(--border);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            background: var(--surface);
+            height: 600px;
+            position: relative;
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .preview-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .preview-overlay {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            font-size: 0.9rem;
+            max-width: 300px;
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+        }
+
+        .view-full-btn {
+            background: linear-gradient(135deg, var(--success), var(--primary));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: var(--radius-lg);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .view-full-btn:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: var(--shadow-xl), 0 0 30px rgba(6, 255, 165, 0.5);
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .analytics-card {
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-light);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .analytics-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(255, 0, 110, 0.05));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .analytics-card:hover::before {
+            opacity: 1;
+        }
+
+        .analytics-card:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: var(--shadow-xl), var(--glow);
+        }
+
+        .analytics-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.75rem;
+            text-shadow: var(--glow);
+        }
+
+        .analytics-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
             font-weight: 600;
-            color: #ff6b35;
-            margin-bottom: 4px;
         }
-        .reasoning-text {
-            color: #666;
+
+        .content-analysis {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(131, 56, 236, 0.05));
+            border: 2px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 3rem;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
         }
-        .reasoning-time {
-            font-size: 11px;
-            color: #999;
-            margin-top: 4px;
+
+        .content-analysis::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            animation: borderGlow 3s ease-in-out infinite;
+        }
+
+        .content-analysis h2 {
+            color: var(--primary);
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            font-weight: 800;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+
+        .analysis-score {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .score-item {
+            flex: 1;
+            text-align: center;
+            padding: 2rem;
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-light);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .score-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg), var(--glow);
+        }
+
+        .score-label {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .score-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--success);
+            text-shadow: 0 0 20px rgba(6, 255, 165, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .input-group {
+                flex-direction: column;
+            }
+            
+            .url-input {
+                width: 100%;
+            }
+            
+            .analytics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .header h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Holographic effect */
+        .holographic {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .holographic::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: holographicSweep 3s ease-in-out infinite;
+        }
+
+        @keyframes holographicSweep {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
         }
     </style>
 </head>
 <body>
+    <!-- Floating particles -->
+    <div class="particles" id="particles"></div>
+
     <div class="container">
-        <div class="header">
-            <div class="logo">
-                <span class="tiger-emoji">🐅</span>
-                <div>
-                    <h1>TestTiger</h1>
-                    <div class="tagline">Autonomous QA System - Real-time Agent Monitoring</div>
-                </div>
+        <div class="header fade-in holographic">
+            <h1>
+                🐅 Test Tiger
+                <span style="font-size: 1.2rem; font-weight: 300; color: var(--text-secondary);">AI QA Dashboard</span>
+            </h1>
+            <p class="subtitle">Advanced website quality analysis powered by AI agents</p>
+            
+            <div class="input-group">
+                <input type="url" id="url-input" class="url-input" placeholder="Enter website URL to analyze..." value="http://localhost:8080/bad-website.html">
+                <button id="analyze-btn" class="analyze-btn">
+                    <span id="btn-text">Start Analysis</span>
+                    <span id="btn-spinner" class="loading-spinner" style="display: none;"></span>
+                </button>
             </div>
-
-            <div class="url-input-section">
-                <label class="url-input-label">🎯 Website to Analyze</label>
-                <div class="url-input-container">
-                    <input
-                        type="url"
-                        class="url-input"
-                        id="url-input"
-                        placeholder="https://example.com"
-                        value="https://www.sundai.club/"
-                    />
-                    <button class="analyze-btn" id="analyze-btn">
-                        🔍 Analyze
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div id="ceo-alert" class="ceo-alert" style="display: none;">
-            <h3>⚠️ CEO Escalation Required</h3>
-            <p id="escalation-message"></p>
         </div>
 
         <div class="grid">
-            <div class="card">
-                <h2>📸 Website Preview</h2>
-                <div id="website-preview" style="border: 2px solid #e0e0e0; border-radius: 8px; overflow: hidden; background: #f5f5f5; height: 300px; display: flex; align-items: center; justify-content: center;">
-                    <p style="color: #999; text-align: center;">Preview will appear after analysis</p>
+            <div class="card fade-in holographic">
+                <h2>🤖 Agent Status</h2>
+                <div id="agent-list" class="agent-list">
+                    <div class="agent-status">
+                        <div class="agent-icon">📋</div>
+                        <div class="agent-info">
+                            <div class="agent-name">Trace Agent</div>
+                            <div class="agent-desc">Tracks metadata & session info</div>
+                            <div class="agent-progress">Waiting...</div>
+                        </div>
+                        <span class="status-badge status-pending">Pending</span>
+                    </div>
+                    <div class="agent-status">
+                        <div class="agent-icon">🤖</div>
+                        <div class="agent-info">
+                            <div class="agent-name">Load Agent</div>
+                            <div class="agent-desc">Measures load time & HTTP status</div>
+                            <div class="agent-progress">Waiting...</div>
+                        </div>
+                        <span class="status-badge status-pending">Pending</span>
+                    </div>
+                    <div class="agent-status">
+                        <div class="agent-icon">🔗</div>
+                        <div class="agent-info">
+                            <div class="agent-name">Link Agent</div>
+                            <div class="agent-desc">Detects broken links</div>
+                            <div class="agent-progress">Waiting...</div>
+                        </div>
+                        <span class="status-badge status-pending">Pending</span>
+                    </div>
+                    <div class="agent-status">
+                        <div class="agent-icon">🏗️</div>
+                        <div class="agent-info">
+                            <div class="agent-name">Structure Agent</div>
+                            <div class="agent-desc">Validates HTML structure & SEO</div>
+                            <div class="agent-progress">Waiting...</div>
+                        </div>
+                        <span class="status-badge status-pending">Pending</span>
+                    </div>
+                    <div class="agent-status">
+                        <div class="agent-icon">🧠</div>
+                        <div class="agent-info">
+                            <div class="agent-name">Content Agent</div>
+                            <div class="agent-desc">AI content analysis with ChatGPT</div>
+                            <div class="agent-progress">Waiting...</div>
+                        </div>
+                        <span class="status-badge status-pending">Pending</span>
+                    </div>
+                    <div class="agent-status">
+                        <div class="agent-icon">📊</div>
+                        <div class="agent-info">
+                            <div class="agent-name">Analytics Agent</div>
+                            <div class="agent-desc">User behavior & conversion metrics</div>
+                            <div class="agent-progress">Waiting...</div>
+                        </div>
+                        <span class="status-badge status-pending">Pending</span>
+                    </div>
+                    <div class="agent-status">
+                        <div class="agent-icon">🖼️</div>
+                        <div class="agent-info">
+                            <div class="agent-name">Preview Agent</div>
+                            <div class="agent-desc">Optimized website preview</div>
+                            <div class="agent-progress">Waiting...</div>
+                        </div>
+                        <span class="status-badge status-pending">Pending</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="card">
-                <h2>Overall Progress</h2>
+            <div class="card fade-in holographic">
+                <h2>📊 Overall Progress</h2>
                 <div class="progress-bar">
                     <div id="overall-progress" class="progress-fill" style="width: 0%"></div>
                 </div>
-                <div id="progress-text" style="text-align: center; margin-top: 12px; font-size: 14px; color: #666;">
-                    Waiting to start...
+                <div id="progress-text" style="text-align: center; margin-top: 1.5rem; font-size: 1.2rem; color: var(--text-secondary); font-weight: 500;">
+                    Ready to analyze...
                 </div>
-
-                <div style="margin-top: 20px;">
-                    <div class="score-card" style="padding: 16px; background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%); border-radius: 8px;">
-                        <div class="score-value" id="quality-score" style="-webkit-text-fill-color: white; color: white;">--</div>
-                        <div class="score-label" style="color: white;">Quality Score</div>
-                    </div>
-                </div>
-
-                <div style="margin-top: 20px;">
-                    <h3 style="font-size: 14px; margin-bottom: 8px;">Business Impact</h3>
-                    <div id="business-impact" style="font-size: 13px; color: #666;">
-                        Analysis in progress...
-                    </div>
+                
+                <div style="text-align: center; margin-top: 3rem;">
+                    <div class="quality-score" id="quality-score">--</div>
+                    <div style="color: var(--text-secondary); font-size: 1.3rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;">Quality Score</div>
                 </div>
             </div>
         </div>
 
-        <div class="card">
-            <h2>🐅 Agent Status</h2>
-            <div id="agent-list">
-                <div class="agent-status" title="Collects metadata and tracks the analysis session">
-                    <div class="agent-icon">📋</div>
-                    <div class="agent-info">
-                        <div class="agent-name">Trace Agent</div>
-                        <div class="agent-desc" style="font-size: 11px; color: #999; margin-bottom: 2px;">Tracks metadata & session info</div>
-                        <div class="agent-progress">Initializing...</div>
-                    </div>
-                    <span class="status-badge status-pending">Pending</span>
-                </div>
-                <div class="agent-status" title="Tests page loading speed and HTTP response">
-                    <div class="agent-icon">🤖</div>
-                    <div class="agent-info">
-                        <div class="agent-name">Load Agent</div>
-                        <div class="agent-desc" style="font-size: 11px; color: #999; margin-bottom: 2px;">Measures load time & HTTP status</div>
-                        <div class="agent-progress">Waiting...</div>
-                    </div>
-                    <span class="status-badge status-pending">Pending</span>
-                </div>
-                <div class="agent-status" title="Validates all links on the page">
-                    <div class="agent-icon">🔗</div>
-                    <div class="agent-info">
-                        <div class="agent-name">Link Agent</div>
-                        <div class="agent-desc" style="font-size: 11px; color: #999; margin-bottom: 2px;">Finds & validates all page links</div>
-                        <div class="agent-progress">Waiting...</div>
-                    </div>
-                    <span class="status-badge status-pending">Pending</span>
-                </div>
-                <div class="agent-status" title="Analyzes HTML structure and SEO elements">
-                    <div class="agent-icon">🏗️</div>
-                    <div class="agent-info">
-                        <div class="agent-name">Structure Agent</div>
-                        <div class="agent-desc" style="font-size: 11px; color: #999; margin-bottom: 2px;">Checks HTML structure & SEO</div>
-                        <div class="agent-progress">Waiting...</div>
-                    </div>
-                    <span class="status-badge status-pending">Pending</span>
-                </div>
+        <div class="card fade-in holographic">
+            <h2>💡 AI Recommendations</h2>
+            <div id="recommendations-list">
+                <p style="text-align: center; color: var(--text-muted); padding: 3rem; font-size: 1.1rem;">
+                    AI recommendations will appear here after analysis...
+                </p>
             </div>
         </div>
 
-        <div class="grid" style="grid-template-columns: 1fr 1fr;">
-            <div class="recommendations">
-                <h2>💡 AI Recommendations</h2>
-                <div id="recommendations-list">
-                    <p style="text-align: center; color: #999; padding: 20px;">
-                        Waiting for analysis to complete...
-                    </p>
-                </div>
-            </div>
-
-            <div class="recommendations" style="border: 2px solid #ff6b35;">
-                <h2>✏️ Suggested Edits</h2>
-                <div id="suggested-edits">
-                    <p style="text-align: center; color: #999; padding: 20px;">
-                        Actionable fixes will appear here...
-                    </p>
-                </div>
+        <div class="content-analysis fade-in holographic">
+            <h2>🧠 ChatGPT Content Analysis</h2>
+            <div id="content-analysis">
+                <p style="text-align: center; color: var(--text-muted); padding: 3rem; font-size: 1.1rem;">
+                    AI content analysis will appear here...
+                </p>
             </div>
         </div>
 
-        <div class="reasoning-panel">
+        <div class="recommendations fade-in holographic">
+            <h2>📊 User KPIs & Conversion Statistics</h2>
+            <div id="analytics-kpis">
+                <p style="text-align: center; color: var(--text-muted); padding: 3rem; font-size: 1.1rem;">
+                    User behavior analytics will appear here...
+                </p>
+            </div>
+        </div>
+
+        <div class="recommendations fade-in holographic">
+            <h2>🖼️ Improved Website Preview</h2>
+            <div id="website-preview" class="website-preview">
+                <p style="text-align: center; color: var(--text-muted); padding: 3rem; display: flex; align-items: center; justify-content: center; height: 100%; font-size: 1.1rem;">
+                    Optimized website preview will appear after analysis
+                </p>
+            </div>
+            <div style="text-align: center;">
+                <button id="view-full-preview" class="view-full-btn" style="display: none;">
+                    View Full Preview
+                </button>
+            </div>
+        </div>
+
+        <div class="reasoning-panel fade-in holographic">
             <div class="reasoning-title">
                 <span>🧠</span>
                 <span>Agent Reasoning</span>
             </div>
             <div id="reasoning-list">
-                <p style="text-align: center; color: #999; padding: 20px;">
+                <p style="text-align: center; color: var(--text-muted); padding: 3rem; font-size: 1.1rem;">
                     Waiting for agents to start...
                 </p>
             </div>
         </div>
+
+        <div id="human-alert" class="human-alert" style="display: none;">
+            <h3>⚠️ Human-in-the-Loop Escalation Required</h3>
+            <p id="escalation-message"></p>
+        </div>
     </div>
 
     <script>
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
         // Real-time WebSocket connection to agent system
         let ws;
         const agentStatus = {};
 
         function connectWebSocket() {
             ws = new WebSocket('ws://localhost:3000');
-
+            
             ws.onopen = () => {
-                console.log('Connected to agent system');
-                document.getElementById('progress-text').textContent = 'Connected - Waiting for agents...';
+                console.log('Connected to Test Tiger dashboard');
             };
-
+            
             ws.onmessage = (event) => {
                 const data = JSON.parse(event.data);
                 handleMessage(data);
             };
-
+            
+            ws.onclose = () => {
+                console.log('Disconnected from dashboard');
+                setTimeout(connectWebSocket, 3000);
+            };
+            
             ws.onerror = (error) => {
                 console.error('WebSocket error:', error);
-            };
-
-            ws.onclose = () => {
-                console.log('Disconnected from agent system');
-                setTimeout(connectWebSocket, 2000); // Reconnect after 2s
             };
         }
 
         function handleMessage(data) {
             switch(data.type) {
                 case 'agent_start':
-                    updateAgentStatus(data.agent, 'running', data.progress || 'Starting...');
+                    updateAgentStatus(data.agent, 'running', data.progress);
                     break;
                 case 'agent_progress':
                     updateAgentStatus(data.agent, 'running', data.progress);
@@ -465,6 +1160,13 @@
                     break;
                 case 'agent_complete':
                     updateAgentStatus(data.agent, 'complete', 'Complete ✓');
+                    if (data.agent === 'Content Agent') {
+                        displayContentAnalysis(data.result);
+                    } else if (data.agent === 'Analytics Agent') {
+                        displayAnalyticsKPIs(data.result);
+                    } else if (data.agent === 'Preview Agent') {
+                        displayWebsitePreview(data.result);
+                    }
                     break;
                 case 'overall_progress':
                     updateOverallProgress(data.percent, data.message);
@@ -478,133 +1180,249 @@
                 case 'escalation':
                     displayEscalation(data.escalation);
                     break;
-                case 'analysis_complete':
-                    // Trigger custom event to re-enable button
-                    window.dispatchEvent(new Event('analysisComplete'));
+                case 'reasoning':
+                    addReasoning(data.agent, data.message, data.status);
                     break;
                 case 'agent_reasoning':
-                    displayReasoning(data.agent, data.reasoning, data.reasoningType, data.timestamp);
+                    console.log('Received agent reasoning:', data);
+                    addReasoning(data.agent, data.reasoning, data.reasoningType || 'info');
                     break;
             }
-        }
-
-        function displayReasoning(agent, reasoning, type, timestamp) {
-            const reasoningList = document.getElementById('reasoning-list');
-
-            // Remove placeholder if exists
-            const placeholder = reasoningList.querySelector('p');
-            if (placeholder) {
-                reasoningList.innerHTML = '';
-            }
-
-            const item = document.createElement('div');
-            item.className = `reasoning-item ${type}`;
-
-            const time = new Date(timestamp).toLocaleTimeString();
-
-            item.innerHTML = `
-                <div class="reasoning-agent">${agent}</div>
-                <div class="reasoning-text">${reasoning}</div>
-                <div class="reasoning-time">${time}</div>
-            `;
-
-            reasoningList.insertBefore(item, reasoningList.firstChild);
-
-            // Keep only last 20 items
-            while (reasoningList.children.length > 20) {
-                reasoningList.removeChild(reasoningList.lastChild);
-            }
-
-            // Auto-scroll to top to see latest reasoning
-            reasoningList.parentElement.scrollTop = 0;
         }
 
         function updateAgentStatus(agentName, status, progress) {
-            agentStatus[agentName] = { status, progress };
-
-            const agents = ['Trace Agent', 'Load Agent', 'Link Agent', 'Structure Agent'];
-            const agentList = document.getElementById('agent-list');
-
-            agents.forEach((agent, index) => {
-                const statusDiv = agentList.children[index];
+            const agents = ['Trace Agent', 'Load Agent', 'Link Agent', 'Structure Agent', 'Content Agent', 'Analytics Agent', 'Preview Agent'];
+            const index = agents.indexOf(agentName);
+            
+            if (index !== -1) {
+                const statusDiv = document.getElementById('agent-list').children[index];
                 const badge = statusDiv.querySelector('.status-badge');
                 const progressDiv = statusDiv.querySelector('.agent-progress');
-
-                if (agentStatus[agent]) {
-                    badge.className = `status-badge status-${agentStatus[agent].status}`;
-                    badge.textContent = agentStatus[agent].status === 'running' ? 'Running' :
-                                       agentStatus[agent].status === 'complete' ? 'Complete' : 'Pending';
-                    progressDiv.textContent = agentStatus[agent].progress;
-                }
-            });
+                
+                badge.className = `status-badge status-${status}`;
+                badge.textContent = status === 'running' ? 'Running' : 
+                                  status === 'complete' ? 'Complete' : 
+                                  status === 'failed' ? 'Failed' : 'Pending';
+                
+                progressDiv.textContent = progress;
+            }
         }
 
         function updateOverallProgress(percent, message) {
-            document.getElementById('overall-progress').style.width = percent + '%';
-            document.getElementById('progress-text').textContent = message || `${percent}% Complete`;
+            const progressBar = document.getElementById('overall-progress');
+            const progressText = document.getElementById('progress-text');
+            
+            progressBar.style.width = `${percent}%`;
+            progressText.textContent = message;
         }
 
         function displayScore(score) {
             document.getElementById('quality-score').textContent = score.overall;
-
-            const gradeColor = score.grade === 'A' ? '#00b894' :
-                              score.grade === 'B' ? '#0984e3' :
-                              score.grade === 'C' ? '#fdcb6e' : '#d63031';
-            document.getElementById('quality-score').style.background = gradeColor;
-            document.getElementById('quality-score').style['-webkit-background-clip'] = 'text';
-
-            document.getElementById('business-impact').innerHTML = `
-                <div style="margin-bottom: 8px;"><strong>Technical Health:</strong> ${score.technical}/100</div>
-                <div style="margin-bottom: 8px;"><strong>SEO Optimization:</strong> ${score.seo}/100</div>
-                <div><strong>Reliability:</strong> ${score.reliability}/100</div>
-            `;
         }
 
         function displayRecommendations(recommendations) {
+            const container = document.getElementById('recommendations-list');
+            
             if (recommendations.length === 0) {
-                document.getElementById('recommendations-list').innerHTML = `
-                    <p style="text-align: center; color: #00b894; padding: 20px;">
-                        ✅ No issues found - website meets all quality standards!
-                    </p>
-                `;
+                container.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 3rem; font-size: 1.1rem;">No recommendations at this time.</p>';
                 return;
             }
-
-            const priorityClasses = {
-                critical: 'priority-critical',
-                high: 'priority-high',
-                medium: 'priority-medium',
-                low: ''
-            };
-
-            const priorityEmojis = {
-                critical: '🔴',
-                high: '🟠',
-                medium: '🟡',
-                low: '🟢'
-            };
-
-            const html = recommendations.slice(0, 5).map(rec => `
-                <div class="recommendation-item ${priorityClasses[rec.priority]}">
-                    <div class="recommendation-title">${priorityEmojis[rec.priority]} ${rec.category}</div>
-                    <div class="recommendation-desc">
-                        <strong>Issue:</strong> ${rec.issue}<br>
-                        <strong>Action:</strong> ${rec.action}<br>
-                        <strong>Impact:</strong> ${rec.business_impact}
-                    </div>
+            
+            const html = recommendations.map(rec => `
+                <div class="recommendation-item">
+                    <span class="recommendation-priority priority-${rec.priority}">${rec.priority}</span>
+                    <div style="font-weight: 700; margin-bottom: 0.75rem; color: var(--text-primary); font-size: 1.1rem;">${rec.issue}</div>
+                    <div style="color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.6;">${rec.action}</div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted); font-style: italic;">💼 ${rec.business_impact}</div>
                 </div>
             `).join('');
-
-            document.getElementById('recommendations-list').innerHTML = html;
+            
+            container.innerHTML = html;
         }
 
         function displayEscalation(escalation) {
             if (escalation.escalate) {
-                document.getElementById('ceo-alert').style.display = 'block';
+                document.getElementById('human-alert').style.display = 'block';
                 document.getElementById('escalation-message').textContent = escalation.reason;
             } else {
-                document.getElementById('ceo-alert').style.display = 'none';
+                document.getElementById('human-alert').style.display = 'none';
             }
+        }
+
+        function displayContentAnalysis(result) {
+            const contentAnalysisDiv = document.getElementById('content-analysis');
+            
+            if (result.status === 'skipped') {
+                contentAnalysisDiv.innerHTML = `
+                    <div style="padding: 3rem; text-align: center; background: rgba(255, 190, 11, 0.1); border-radius: var(--radius-lg); border: 1px solid rgba(255, 190, 11, 0.3); backdrop-filter: blur(20px);">
+                        <h3 style="color: var(--warning); margin-bottom: 1.5rem; font-size: 1.5rem; font-weight: 700;">⚠️ Content Analysis Skipped</h3>
+                        <p style="color: var(--text-secondary); font-size: 1.1rem;">${result.reason}</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            if (result.status === 'ok' && result.evaluation) {
+                const evaluation = result.evaluation;
+                console.log('Content evaluation:', evaluation);
+                
+                // More flexible parsing with multiple patterns
+                const clarityMatch = evaluation.match(/Clarity[:\s]*(\d+)\/5/i) || evaluation.match(/Clarity[:\s]*(\d+)/i);
+                const toneMatch = evaluation.match(/Tone[:\s]*(\d+)\/5/i) || evaluation.match(/Tone[:\s]*(\d+)/i);
+                const commentMatch = evaluation.match(/Comment[:\s]*(.+)/is) || evaluation.match(/Analysis[:\s]*(.+)/is) || evaluation.match(/Review[:\s]*(.+)/is);
+                
+                const clarityScore = clarityMatch ? clarityMatch[1] : 'N/A';
+                const toneScore = toneMatch ? toneMatch[1] : 'N/A';
+                const comment = commentMatch ? commentMatch[1].trim() : evaluation;
+                
+                contentAnalysisDiv.innerHTML = `
+                    <div class="analysis-score">
+                        <div class="score-item">
+                            <div class="score-label">Clarity</div>
+                            <div class="score-value">${clarityScore}/5</div>
+                        </div>
+                        <div class="score-item">
+                            <div class="score-label">Tone</div>
+                            <div class="score-value">${toneScore}/5</div>
+                        </div>
+                    </div>
+                    <div style="background: var(--surface); padding: 2rem; border-radius: var(--radius-lg); box-shadow: var(--shadow); backdrop-filter: blur(20px); border: 1px solid var(--border-light);">
+                        <h4 style="color: var(--text-primary); margin-bottom: 1.5rem; font-size: 1.3rem; font-weight: 700;">AI Analysis</h4>
+                        <p style="color: var(--text-secondary); line-height: 1.8; font-size: 1.1rem;">${comment}</p>
+                    </div>
+                `;
+            } else if (result.status === 'fail') {
+                contentAnalysisDiv.innerHTML = `
+                    <div style="padding: 3rem; text-align: center; background: rgba(251, 86, 7, 0.1); border-radius: var(--radius-lg); border: 1px solid rgba(251, 86, 7, 0.3); backdrop-filter: blur(20px);">
+                        <h3 style="color: var(--error); margin-bottom: 1.5rem; font-size: 1.5rem; font-weight: 700;">❌ Content Analysis Failed</h3>
+                        <p style="color: var(--text-secondary); font-size: 1.1rem;">${result.error}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function displayAnalyticsKPIs(result) {
+            const analyticsDiv = document.getElementById('analytics-kpis');
+            if (result.status === 'ok' && result.kpis && result.conversions) {
+                const kpis = result.kpis;
+                const conversions = result.conversions;
+                analyticsDiv.innerHTML = `
+                    <div style="padding: 3rem; background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(6, 255, 165, 0.05)); border-radius: var(--radius-xl); border: 1px solid var(--border); backdrop-filter: blur(20px);">
+                        <h3 style="color: var(--primary); margin-bottom: 2rem; font-size: 1.8rem; font-weight: 800;">📊 User Behavior Analytics</h3>
+                        <div class="analytics-grid">
+                            <div class="analytics-card">
+                                <div class="analytics-value">${kpis.pageViews.toLocaleString()}</div>
+                                <div class="analytics-label">Monthly Page Views</div>
+                            </div>
+                            <div class="analytics-card">
+                                <div class="analytics-value">${kpis.uniqueVisitors.toLocaleString()}</div>
+                                <div class="analytics-label">Unique Visitors</div>
+                            </div>
+                            <div class="analytics-card">
+                                <div class="analytics-value">${(kpis.conversionRate * 100).toFixed(2)}%</div>
+                                <div class="analytics-label">Conversion Rate</div>
+                            </div>
+                            <div class="analytics-card">
+                                <div class="analytics-value">${(kpis.bounceRate * 100).toFixed(1)}%</div>
+                                <div class="analytics-label">Bounce Rate</div>
+                            </div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+                            <div>
+                                <h4 style="color: var(--primary); margin-bottom: 1.5rem; font-size: 1.3rem; font-weight: 700;">🕒 Session Metrics</h4>
+                                <div style="background: var(--surface); padding: 1.5rem; border-radius: var(--radius-lg); box-shadow: var(--shadow); backdrop-filter: blur(20px); font-size: 1rem;">
+                                    <div style="margin-bottom: 0.75rem;"><strong>Avg Session:</strong> ${Math.floor(kpis.averageSessionDuration / 60)}m ${kpis.averageSessionDuration % 60}s</div>
+                                    ${kpis.cartAbandonmentRate > 0 ? `<div><strong>Cart Abandonment:</strong> ${(kpis.cartAbandonmentRate * 100).toFixed(1)}%</div>` : ''}
+                                </div>
+                            </div>
+                            <div>
+                                <h4 style="color: var(--primary); margin-bottom: 1.5rem; font-size: 1.3rem; font-weight: 700;">📱 Device Breakdown</h4>
+                                <div style="background: var(--surface); padding: 1.5rem; border-radius: var(--radius-lg); box-shadow: var(--shadow); backdrop-filter: blur(20px); font-size: 1rem;">
+                                    ${kpis.deviceBreakdown.map(device =>
+                                        `<div style="margin-bottom: 0.5rem;"><strong>${device.device}:</strong> ${(device.percentage * 100).toFixed(1)}%</div>`
+                                    ).join('')}
+                                </div>
+                            </div>
+                        </div>
+                        ${result.recommendations && result.recommendations.length > 0 ? `
+                            <div style="margin-top: 2rem;">
+                                <h4 style="color: var(--primary); margin-bottom: 1.5rem; font-size: 1.3rem; font-weight: 700;">💡 Analytics Recommendations</h4>
+                                <div style="background: var(--surface); padding: 2rem; border-radius: var(--radius-lg); box-shadow: var(--shadow); border-left: 4px solid var(--primary); backdrop-filter: blur(20px);">
+                                    ${result.recommendations.map(rec => `<div style="margin-bottom: 0.75rem; font-size: 1rem;">• ${rec}</div>`).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            } else if (result.status === 'fail') {
+                analyticsDiv.innerHTML = `
+                    <div style="padding: 3rem; text-align: center; background: rgba(251, 86, 7, 0.1); border-radius: var(--radius-lg); border: 1px solid rgba(251, 86, 7, 0.3); backdrop-filter: blur(20px);">
+                        <h3 style="color: var(--error); margin-bottom: 1.5rem; font-size: 1.5rem; font-weight: 700;">❌ Analytics Analysis Failed</h3>
+                        <p style="color: var(--text-secondary); font-size: 1.1rem;">${result.error}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function displayWebsitePreview(result) {
+            const previewDiv = document.getElementById('website-preview');
+            const viewButton = document.getElementById('view-full-preview');
+            
+            if (result.status === 'ok' && result.previewHtml) {
+                const iframe = document.createElement('iframe');
+                iframe.className = 'preview-iframe';
+                iframe.srcdoc = result.previewHtml;
+                
+                previewDiv.innerHTML = '';
+                previewDiv.appendChild(iframe);
+                
+                viewButton.style.display = 'inline-block';
+                viewButton.onclick = () => {
+                    const newWindow = window.open('', '_blank');
+                    newWindow.document.write(result.previewHtml);
+                    newWindow.document.close();
+                };
+                
+                if (result.improvements) {
+                    const summary = document.createElement('div');
+                    summary.className = 'preview-overlay';
+                    summary.innerHTML = `
+                        <div style="font-weight: 700; margin-bottom: 0.75rem; font-size: 1rem;">✅ Improvements Applied:</div>
+                        <div style="margin-bottom: 0.5rem;">• Fixed ${result.improvements.removedIssues.length} issues</div>
+                        <div style="margin-bottom: 0.5rem;">• Added ${result.improvements.addedElements.length} enhancements</div>
+                        <div>• Optimized SEO & UX</div>
+                    `;
+                    previewDiv.appendChild(summary);
+                }
+            } else if (result.status === 'fail') {
+                previewDiv.innerHTML = `
+                    <div style="padding: 3rem; text-align: center; background: rgba(251, 86, 7, 0.1); border-radius: var(--radius-lg); border: 1px solid rgba(251, 86, 7, 0.3); backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center; height: 100%;">
+                        <div>
+                            <h3 style="color: var(--error); margin-bottom: 1.5rem; font-size: 1.5rem; font-weight: 700;">❌ Preview Generation Failed</h3>
+                            <p style="color: var(--text-secondary); font-size: 1.1rem;">${result.error}</p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function addReasoning(agent, message, status) {
+            console.log('Adding reasoning:', { agent, message, status });
+            const reasoningList = document.getElementById('reasoning-list');
+            
+            if (reasoningList.children[0] && reasoningList.children[0].textContent.includes('Waiting for agents')) {
+                reasoningList.innerHTML = '';
+            }
+            
+            const reasoningItem = document.createElement('div');
+            reasoningItem.className = 'reasoning-item';
+            reasoningItem.innerHTML = `
+                <div class="reasoning-agent">${agent}</div>
+                <div class="reasoning-message">${message}</div>
+                <div class="reasoning-status">${status}</div>
+            `;
+            
+            reasoningList.appendChild(reasoningItem);
         }
 
         // Analyze button functionality
@@ -613,29 +1431,23 @@
 
         analyzeBtn.addEventListener('click', () => {
             const url = urlInput.value.trim();
-
+            
             if (!url) {
                 alert('Please enter a URL to analyze');
                 return;
             }
-
-            // Validate URL
-            try {
-                new URL(url);
-            } catch (e) {
-                alert('Please enter a valid URL (e.g., https://example.com)');
-                return;
-            }
-
+            
             // Reset dashboard
             document.getElementById('overall-progress').style.width = '0%';
             document.getElementById('progress-text').textContent = 'Starting analysis...';
             document.getElementById('quality-score').textContent = '--';
-            document.getElementById('recommendations-list').innerHTML = '<p style="text-align: center; color: #999; padding: 20px;">Waiting for analysis to complete...</p>';
-            document.getElementById('ceo-alert').style.display = 'none';
+            document.getElementById('recommendations-list').innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 3rem; font-size: 1.1rem;">Waiting for analysis to complete...</p>';
+            document.getElementById('content-analysis').innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 3rem; font-size: 1.1rem;">AI content analysis will appear here...</p>';
+            document.getElementById('analytics-kpis').innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 3rem; font-size: 1.1rem;">User behavior analytics will appear here...</p>';
+            document.getElementById('human-alert').style.display = 'none';
 
             // Reset agent statuses
-            const agents = ['Trace Agent', 'Load Agent', 'Link Agent', 'Structure Agent'];
+            const agents = ['Trace Agent', 'Load Agent', 'Link Agent', 'Structure Agent', 'Content Agent', 'Analytics Agent', 'Preview Agent'];
             agents.forEach((agent, index) => {
                 const statusDiv = document.getElementById('agent-list').children[index];
                 const badge = statusDiv.querySelector('.status-badge');
@@ -645,38 +1457,53 @@
                 progressDiv.textContent = 'Waiting...';
             });
 
-            // Disable button
-            analyzeBtn.disabled = true;
-            analyzeBtn.textContent = '⏳ Analyzing...';
+            // Reset reasoning panel
+            document.getElementById('reasoning-list').innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 3rem; font-size: 1.1rem;">Waiting for agents to start...</p>';
 
-            // Send to server
-            if (ws && ws.readyState === 1) {
+            // Reset preview
+            document.getElementById('website-preview').innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 3rem; display: flex; align-items: center; justify-content: center; height: 100%; font-size: 1.1rem;">Optimized website preview will appear after analysis</p>';
+            document.getElementById('view-full-preview').style.display = 'none';
+
+            // Show loading state
+            analyzeBtn.disabled = true;
+            document.getElementById('btn-text').style.display = 'none';
+            document.getElementById('btn-spinner').style.display = 'inline-block';
+
+            // Send analysis request
+            if (ws && ws.readyState === WebSocket.OPEN) {
                 ws.send(JSON.stringify({
                     type: 'analyze',
                     url: url
                 }));
             } else {
-                alert('Not connected to server. Please refresh the page.');
+                alert('Dashboard connection lost. Please refresh the page.');
                 analyzeBtn.disabled = false;
-                analyzeBtn.textContent = '🔍 Analyze';
+                document.getElementById('btn-text').style.display = 'inline';
+                document.getElementById('btn-spinner').style.display = 'none';
             }
-
-            // Re-enable button after 10 seconds (timeout)
-            setTimeout(() => {
-                if (analyzeBtn.disabled) {
-                    analyzeBtn.disabled = false;
-                    analyzeBtn.textContent = '🔍 Analyze';
-                }
-            }, 180000); // 3 minutes timeout
         });
 
-        // Re-enable analyze button when analysis completes
-        window.addEventListener('analysisComplete', () => {
-            analyzeBtn.disabled = false;
-            analyzeBtn.textContent = '🔍 Analyze';
-        });
+        // Auto-hide loading state after analysis completes
+        let analysisComplete = false;
+        const originalHandleMessage = handleMessage;
+        handleMessage = function(data) {
+            originalHandleMessage(data);
+            
+            if (data.type === 'overall_progress' && data.percent >= 100) {
+                analysisComplete = true;
+                setTimeout(() => {
+                    if (analysisComplete) {
+                        analyzeBtn.disabled = false;
+                        document.getElementById('btn-text').style.display = 'inline';
+                        document.getElementById('btn-spinner').style.display = 'none';
+                        analysisComplete = false;
+                    }
+                }, 2000);
+            }
+        };
 
-        // Connect on load
+        // Initialize particles and connect to WebSocket when page loads
+        createParticles();
         connectWebSocket();
     </script>
 </body>

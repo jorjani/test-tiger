@@ -1,0 +1,104 @@
+{
+  "url": "http://localhost:8080/bad-website.html",
+  "trace": {
+    "status": "ok",
+    "agent_id": "Site-1761522782629",
+    "purpose": "Ad-hoc website analysis",
+    "timestamp": "2025-10-26T23:53:02.630Z"
+  },
+  "load": {
+    "status": "ok",
+    "http_status": 200,
+    "load_time": 53
+  },
+  "links": {
+    "status": "ok",
+    "brokenLinks": [
+      "http://localhost:8080/bad-website.html#home",
+      "http://localhost:8080/bad-website.html#products",
+      "http://localhost:8080/bad-website.html#about",
+      "https://broken-contact-page.com/",
+      "https://nonexistent-blog.com/",
+      "http://localhost:8080/bad-website.html#products",
+      "http://localhost:8080/bad-website.html#privacy",
+      "http://localhost:8080/bad-website.html#terms",
+      "https://broken-shipping-info.com/",
+      "https://nonexistent-faq.com/"
+    ]
+  },
+  "structure": {
+    "status": "ok",
+    "hasTitle": true,
+    "hasH1": false,
+    "hasMetaDescription": false
+  },
+  "content": {
+    "status": "ok",
+    "evaluation": "Clarity: 5/5 - The content is very clear and straightforward with detailed descriptions of the featured products.\n\nTone: 5/5 - The tone is professional and informative, fitting for a technology-based online store.\n\nComment: The web content is well-organized with clear headings and concise paragraphs. It effectively markets the store's products and services while also building confidence in its reliability and secure purchase process. It appeals to a range of potential customers by addressing different needs (latest tech trends, high-quality products, reliable work laptops, etc.). The tone supports this by being professional, yet friendly and customer-centered."
+  },
+  "analytics": {
+    "status": "ok",
+    "kpis": {
+      "pageViews": 11101,
+      "uniqueVisitors": 2219,
+      "bounceRate": 0.6865111679127699,
+      "averageSessionDuration": 165,
+      "conversionRate": 0.011081157864733886,
+      "cartAbandonmentRate": 0,
+      "topPages": [
+        "/",
+        "/products",
+        "/about",
+        "/contact",
+        "/blog"
+      ],
+      "trafficSources": [
+        {
+          "source": "Organic Search",
+          "percentage": 0.5
+        },
+        {
+          "source": "Direct",
+          "percentage": 0.16
+        },
+        {
+          "source": "Social Media",
+          "percentage": 0.16
+        },
+        {
+          "source": "Email",
+          "percentage": 0.1
+        },
+        {
+          "source": "Referral",
+          "percentage": 0.08
+        }
+      ],
+      "deviceBreakdown": [
+        {
+          "device": "Mobile",
+          "percentage": 0.6835914899586759
+        },
+        {
+          "device": "Desktop",
+          "percentage": 0.3415040696455686
+        },
+        {
+          "device": "Tablet",
+          "percentage": 0.11156545590000187
+        }
+      ]
+    },
+    "conversions": {
+      "overallConversionRate": 0.011081157864733886,
+      "productPageConversionRate": 0,
+      "checkoutConversionRate": 0,
+      "emailSignupRate": 0,
+      "addToCartRate": 0,
+      "purchaseCompletionRate": 0
+    },
+    "recommendations": [
+      "Low conversion rate - optimize call-to-action buttons and checkout process"
+    ]
+  }
+}

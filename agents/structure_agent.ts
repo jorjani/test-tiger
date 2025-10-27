@@ -98,3 +98,4 @@ export async function runStructureAgent(url: string) {
     return { status: "fail", error: (err as Error).message };
   }
 }
+

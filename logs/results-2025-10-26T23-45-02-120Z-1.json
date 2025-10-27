@@ -1,0 +1,36 @@
+{
+  "url": "http://localhost:8080/bad-website.html",
+  "trace": {
+    "status": "ok",
+    "agent_id": "Site-1761522302122",
+    "purpose": "Ad-hoc website analysis",
+    "timestamp": "2025-10-26T23:45:02.123Z"
+  },
+  "load": {
+    "status": "ok",
+    "http_status": 200,
+    "load_time": 46
+  },
+  "links": {
+    "status": "ok",
+    "brokenLinks": [
+      "https://nonexistent-domain-12345.com/",
+      "https://another-fake-url-xyz.com/",
+      "https://fake-social-media.com/",
+      "https://broken-contact-page.com/",
+      "http://localhost:8080/bad-website.html#about",
+      "http://localhost:8080/bad-website.html#services",
+      "http://localhost:8080/bad-website.html#contact"
+    ]
+  },
+  "structure": {
+    "status": "ok",
+    "hasTitle": false,
+    "hasH1": false,
+    "hasMetaDescription": false
+  },
+  "content": {
+    "status": "ok",
+    "evaluation": "Clarity: 2/5\nTone: 2/5\n\nThe website content is not clear or well-structured. The purpose of the website is unclear, the content is generic and disjointed, and there are numerous mistakes such as broken links. The use of \"lorem ipsum\" text further reduces clarity. The tone is moderately professional but also negative due to the self-admitted poor design and lack of valuable content. The phrase \"© 2024 AI Generated Website\" is confusing as it suggests the website was created in the future. Overall, the website content needs significant improvement to be user-friendly and effective."
+  }
+}

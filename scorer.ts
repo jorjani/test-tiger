@@ -135,18 +135,18 @@ export function generateRecommendations(results: QAResults): Recommendation[] {
   return recommendations;
 }
 
-export function checkCEOEscalation(score: Score, recommendations: Recommendation[]): {
+export function checkHumanEscalation(score: Score, recommendations: Recommendation[]): {
   escalate: boolean;
   reason: string;
   severity: 'critical' | 'warning' | 'info';
 } {
-  // CEO escalation logic based on business impact
+  // Human-in-the-loop escalation logic based on business impact
 
   // Critical: Score below 70 or critical issues found
   if (score.overall < 70) {
     return {
       escalate: true,
-      reason: `Quality score critically low (${score.overall}/100). Immediate executive attention required.`,
+      reason: `Quality score critically low (${score.overall}/100). Human intervention required for immediate fixes.`,
       severity: 'critical'
     };
   }
@@ -155,7 +155,7 @@ export function checkCEOEscalation(score: Score, recommendations: Recommendation
   if (criticalIssues.length > 0) {
     return {
       escalate: true,
-      reason: `${criticalIssues.length} critical issue(s) detected. Business operations may be impacted.`,
+      reason: `${criticalIssues.length} critical issue(s) detected. Human review needed to prevent business impact.`,
       severity: 'critical'
     };
   }
@@ -165,7 +165,7 @@ export function checkCEOEscalation(score: Score, recommendations: Recommendation
   if (score.overall < 85 && highPriorityIssues.length > 2) {
     return {
       escalate: true,
-      reason: `Quality score below target (${score.overall}/100) with ${highPriorityIssues.length} high-priority issues. CEO review recommended.`,
+      reason: `Quality score below target (${score.overall}/100) with ${highPriorityIssues.length} high-priority issues. Human oversight recommended.`,
       severity: 'warning'
     };
   }
@@ -173,7 +173,7 @@ export function checkCEOEscalation(score: Score, recommendations: Recommendation
   // All good - no escalation needed
   return {
     escalate: false,
-    reason: `Quality standards met (${score.overall}/100). QA team can handle autonomously.`,
+    reason: `Quality standards met (${score.overall}/100). AI agents can handle autonomously.`,
     severity: 'info'
   };
 }
@@ -190,16 +190,16 @@ export function displayResults(results: QAResults, score: Score, recommendations
   console.log(`   SEO Optimization:  ${score.seo}/100`);
   console.log(`   Reliability:       ${score.reliability}/100`);
 
-  // CEO Escalation Check
-  const escalation = checkCEOEscalation(score, recommendations);
-  console.log(`\n🎯 CEO Escalation: ${escalation.escalate ? 'YES' : 'NO'}`);
+  // Human-in-the-loop Escalation Check
+  const escalation = checkHumanEscalation(score, recommendations);
+  console.log(`\n🎯 Human Escalation: ${escalation.escalate ? 'YES' : 'NO'}`);
   console.log(`   Reason: ${escalation.reason}`);
 
   if (escalation.escalate) {
     const emoji = escalation.severity === 'critical' ? '🚨' : '⚠️';
-    console.log(`\n${emoji} ESCALATING TO CEO - Human review required`);
+    console.log(`\n${emoji} ESCALATING TO HUMAN-IN-THE-LOOP - Human intervention required`);
   } else {
-    console.log(`\n✅ NO ESCALATION NEEDED - Agents proceeding autonomously`);
+    console.log(`\n✅ NO ESCALATION NEEDED - AI agents proceeding autonomously`);
   }
 
   // Recommendations

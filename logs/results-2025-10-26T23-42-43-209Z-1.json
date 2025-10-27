@@ -1,0 +1,36 @@
+{
+  "url": "http://localhost:8080/bad-website.html",
+  "trace": {
+    "status": "ok",
+    "agent_id": "Site-1761522163210",
+    "purpose": "Ad-hoc website analysis",
+    "timestamp": "2025-10-26T23:42:43.211Z"
+  },
+  "load": {
+    "status": "ok",
+    "http_status": 200,
+    "load_time": 53
+  },
+  "links": {
+    "status": "ok",
+    "brokenLinks": [
+      "https://nonexistent-domain-12345.com/",
+      "https://another-fake-url-xyz.com/",
+      "https://fake-social-media.com/",
+      "https://broken-contact-page.com/",
+      "http://localhost:8080/bad-website.html#about",
+      "http://localhost:8080/bad-website.html#services",
+      "http://localhost:8080/bad-website.html#contact"
+    ]
+  },
+  "structure": {
+    "status": "ok",
+    "hasTitle": false,
+    "hasH1": false,
+    "hasMetaDescription": false
+  },
+  "content": {
+    "status": "ok",
+    "evaluation": "As a language model AI developed by OpenAI, I need a piece of actual content to rate and comment on. Your input did not provide any content to analyze. I would be glad to provide you a meaningful output if you could provide the needed text for analysis."
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "url": "http://localhost:8080/bad-website.html",
+  "trace": {
+    "status": "ok",
+    "agent_id": "Site-1761523094659",
+    "purpose": "Ad-hoc website analysis",
+    "timestamp": "2025-10-26T23:58:14.659Z"
+  },
+  "load": {
+    "status": "ok",
+    "http_status": 200,
+    "load_time": 57
+  },
+  "links": {
+    "status": "ok",
+    "brokenLinks": [
+      "http://localhost:8080/bad-website.html#home",
+      "http://localhost:8080/bad-website.html#products",
+      "http://localhost:8080/bad-website.html#about",
+      "https://broken-contact-page.com/",
+      "https://nonexistent-blog.com/",
+      "http://localhost:8080/bad-website.html#privacy",
+      "http://localhost:8080/bad-website.html#terms",
+      "https://broken-shipping-info.com/",
+      "https://nonexistent-faq.com/"
+    ]
+  },
+  "structure": {
+    "status": "ok",
+    "hasTitle": true,
+    "hasH1": false,
+    "hasMetaDescription": false
+  },
+  "content": {
+    "status": "ok",
+    "evaluation": "Clarity: 5/5 - The information is clear, concise, and easily understood. Headers are used effectively to segment content, making it easy for users to find what they're looking for.\n\nTone: 5/5 - The tone is consistently friendly, professional, and inviting. It helps to build trust and encourages customers to make a purchase.\n\nComment: The language used in the web content is straightforward, and the structure makes it easy to scan through. The tone is welcoming and instills trust in the online store. Also, their policy on returns, shipping, and customer assistance adds reassurance for potential customers. Good work!"
+  },
+  "analytics": {
+    "status": "ok",
+    "kpis": {
+      "pageViews": 9822,
+      "uniqueVisitors": 3838,
+      "bounceRate": 0.5922282634180467,
+      "averageSessionDuration": 298,
+      "conversionRate": 0.04234041106491235,
+      "cartAbandonmentRate": 0,
+      "topPages": [
+        "/",
+        "/products",
+        "/about",
+        "/contact",
+        "/blog"
+      ],
+      "trafficSources": [
+        {
+          "source": "Organic Search",
+          "percentage": 0.49
+        },
+        {
+          "source": "Direct",
+          "percentage": 0.26
+        },
+        {
+          "source": "Social Media",
+          "percentage": 0.11
+        },
+        {
+          "source": "Email",
+          "percentage": 0.04
+        },
+        {
+          "source": "Referral",
+          "percentage": 0.1
+        }
+      ],
+      "deviceBreakdown": [
+        {
+          "device": "Mobile",
+          "percentage": 0.7974616358316888
+        },
+        {
+          "device": "Desktop",
+          "percentage": 0.3978983450512296
+        },
+        {
+          "device": "Tablet",
+          "percentage": 0.06992022634690706
+        }
+      ]
+    },
+    "conversions": {
+      "overallConversionRate": 0.04234041106491235,
+      "productPageConversionRate": 0,
+      "checkoutConversionRate": 0,
+      "emailSignupRate": 0,
+      "addToCartRate": 0,
+      "purchaseCompletionRate": 0
+    },
+    "recommendations": [
+      "High mobile traffic - ensure mobile optimization is excellent"
+    ]
+  }
+}
