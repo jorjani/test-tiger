@@ -30,10 +30,16 @@ export async function POST(request: NextRequest) {
     // Create audit ID
     const auditId = randomUUID();
 
-    // Initialize Stagehand with local Chromium
+    // Initialize Stagehand with auto-detection (Browserbase if API key set, else LOCAL)
     console.log('🎬 Starting audit for:', url);
+
+    const useBrowserbase = !!process.env.BROWSERBASE_API_KEY;
+    console.log(`🌐 Using ${useBrowserbase ? 'BROWSERBASE (cloud)' : 'LOCAL (Chromium)'} mode`);
+
     const stagehand = new Stagehand({
-      env: 'LOCAL', // Use local Chromium browser
+      env: useBrowserbase ? 'BROWSERBASE' : 'LOCAL',
+      apiKey: process.env.BROWSERBASE_API_KEY,
+      projectId: process.env.BROWSERBASE_PROJECT_ID,
       enableCaching: false,
     });
 
