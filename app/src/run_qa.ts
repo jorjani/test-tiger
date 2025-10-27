@@ -7,7 +7,7 @@ import { assignQATask, reviewQAResults } from "./agents/ceo_agent";
 import { calculateScore, generateRecommendations, displayResults, checkCEOEscalation } from "./scorer";
 import { generateReport } from "./reporter";
 import sites from "./urls.json";
-import { broadcastProgress } from "./dashboard_server";
+import { broadcastProgress } from "./dashboard-server";
 import {
   setBroadcastFunction,
   reportAgentStart,

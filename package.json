@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "build": "HEADLESS=true next build",
+    "start": "HEADLESS=true next start",
     "lint": "eslint",
     "qa:start": "tsx src/start.ts",
     "qa:run": "tsx src/run_qa.ts",
@@ -13,7 +13,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@browserbasehq/stagehand": "^2.5.2",
+    "@browserbasehq/stagehand": "^2.1.0",
     "@types/node": "^24.9.1",
     "@types/ws": "^8.18.1",
     "axe-core": "^4.11.0",
@@ -26,6 +26,7 @@
     "puppeteer": "^24.26.1",
     "react": "19.2.0",
     "react-dom": "19.2.0",
+    "thread-stream": "^3.1.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
     "ws": "^8.18.3"

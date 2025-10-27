@@ -4,7 +4,10 @@ export async function runStructureAgent(url: string) {
   console.log('\n🏗️  [STRUCTURE AGENT] Starting...');
   console.log(`   Target: ${url}`);
 
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({
+    headless: true,
+    args: ['--disable-dev-shm-usage', '--no-sandbox', '--disable-gpu']
+  });
   const context = await browser.newContext();
   const page = await context.newPage();
   await page.goto(url);

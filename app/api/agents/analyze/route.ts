@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { startAnalysis } from '../../../src/controllers/qa-controller';
 
 export async function POST(request: NextRequest) {
   try {
@@ -10,9 +11,6 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-
-    // Import QA controller dynamically
-    const { startAnalysis } = await import('../../../src/controllers/qa-controller');
 
     // Run QA analysis asynchronously
     startAnalysis(url).catch((error: unknown) => {

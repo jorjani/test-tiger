@@ -6,7 +6,10 @@ export async function runLinkAgent(url: string) {
   console.log(`   Target: ${url}`);
   reportAgentReasoning('Link Agent', `Starting link analysis for: ${url}`, 'info');
 
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({
+    headless: true,
+    args: ['--disable-dev-shm-usage', '--no-sandbox', '--disable-gpu']
+  });
   const context = await browser.newContext();
   const page = await context.newPage();
   await page.goto(url);

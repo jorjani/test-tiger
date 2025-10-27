@@ -1,6 +1,6 @@
 // Start script - runs dashboard server and QA analysis together
 
-import { startServer } from './dashboard_server';
+import { startServer } from './dashboard-server';
 import { spawn } from 'child_process';
 
 console.log('🚀 Starting Autonomous QA System with Live Dashboard...\n');
